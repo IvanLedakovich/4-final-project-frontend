@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 import {
 	getAllRecipesAxios,
 	getRecipesByDifficultyAxios,
@@ -42,6 +43,8 @@ const Home: React.FC = () => {
 	);
 	const showMoreButtonState = useSelector((state: any) => state.showMoreButton);
 
+	const user = useSelector((state: any) => state.user);
+
 	const dispatch = useDispatch();
 	const [difficultyChosen, setDifficultyChosen] = useState(false);
 
@@ -74,6 +77,10 @@ const Home: React.FC = () => {
 		dispatch(loadMore(res));
 		if (isEnd) dispatchShowMoreButton(false);
 	};
+
+	if(!user) {
+		Navigate({to: '/login'}) 
+	}
 
 	return (
 		<>

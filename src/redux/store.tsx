@@ -5,13 +5,15 @@ import {
 	recipesReducer,
 	showMoreButtonReducer
 } from './recipes/reducer';
+import { userReducer } from './user/reducer';
 
 const store = configureStore({
 	reducer: {
 		recipes: recipesReducer,
 		recipesCount: recipesCountReducer,
 		showMoreButton: showMoreButtonReducer,
-		recipesLoaded: recipesLoadedReducer
+		recipesLoaded: recipesLoadedReducer,
+		user: userReducer
 	}
 });
 
