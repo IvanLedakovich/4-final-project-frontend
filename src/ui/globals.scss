@@ -1,0 +1,82 @@
+/*
+  Based on TailwindCSS recommendations,
+  consider using classes instead of the `@apply` directive
+  @see https://tailwindcss.com/docs/reusing-styles#avoiding-premature-abstraction
+*/
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+body {
+	@apply m-0;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+		'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+code {
+	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+.just-me-again-down-here-regular {
+	@apply font-normal not-italic text-white;
+	font-family: 'Just Me Again Down Here', cursive;
+	scale: 2.5;
+}
+.nunito-sans-normal {
+	@apply font-normal not-italic;
+	font-family: 'Nunito Sans', sans-serif;
+	font-optical-sizing: auto;
+	font-variation-settings: 'wdth' 100, 'YTLC' 500;
+}
+.pizzaHeaderContainer {
+	@apply w-full h-[400px] relative;
+}
+.pizzaHeaderImage {
+	@apply w-full h-[400px] object-cover;
+}
+.headerLineLeft {
+	@apply absolute h-[3px] w-[31%] translate-x-[0%] -translate-y-2/4 z-10 left-[0%] top-2/4;
+	background: #ffffff;
+}
+.headerLineRight {
+	@apply absolute h-[3px] w-[31%] translate-x-[0%] -translate-y-2/4 z-10 left-[69%] top-2/4;
+	background: #ffffff;
+}
+.headerLogoContainer {
+	@apply absolute w-[38%] translate-x-[-5%] -translate-y-2/4 z-10 inline-flex items-center justify-center left-[31%] top-2/4;
+}
+.bowlContainer {
+	@apply mr-[100px];
+}
+.bowlReflectionBig {
+	@apply absolute w-[2%] left-[26%] top-[55%];
+}
+.bowlReflectionSmall {
+	@apply absolute w-[0.6%] left-[28.5%] top-[72%];
+}
+.searchBarDefault {
+	@apply absolute w-1/5 mt-[50px] left-[3%];
+}
+.searchBarHovered {
+	@apply absolute w-1/5 mt-[50px] left-[3%];
+}
+.difficultyContainer {
+	@apply absolute w-[38%] inline-flex items-center justify-evenly h-[35px] mt-[50px] left-[61%];
+}
+.difficultyButtonDefault {
+	@apply w-[18%] h-[35px] inline-flex items-center justify-center rounded-[10px] border-[1.5px] border-solid border-black;
+}
+.difficultyButtonChosen {
+	@apply w-[18%] h-[35px] inline-flex items-center justify-center rounded-[10px] border-[1.5px] border-solid border-black;
+}
+.RecipiesContainer {
+	@apply grid grid-cols-[repeat(auto-fit,minmax(400px,1fr))] gap-[2.5em] mt-[150px] mx-[45px];
+}
+.RecipeCard {
+	@apply w-full h-[585px] rounded-[10px] border-[1.5px] border-solid border-black;
+}
+.RecipeCardImage {
+	@apply h-[260px] w-full object-cover rounded-[10px];
+}
+.RecipeTag {
+	@apply rounded-[10px] border-[1.5px] border-solid border-[#c65f00];
+}
