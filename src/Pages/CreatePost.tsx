@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { registerAxios } from '../api/axios';
 import { fill } from '../redux/user/actionCreators';
 
-const Register: React.FC = () => {
+const CreatePost: React.FC = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [nickname, setNickname] = useState('');
@@ -19,7 +19,7 @@ const Register: React.FC = () => {
 	return (
 		<>
 			<div className={clsx('w-full', 'h-full', 'grid', 'justify-center')}>
-				<h1 className={clsx('text-7xl', 'mt-[5%]', 'mx-auto')}>REGISTER</h1>
+				<h1 className={clsx('text-7xl', 'mt-[5%]', 'mx-auto')}>CREATE POST</h1>
 
 				<div
 					className={clsx(
@@ -27,7 +27,7 @@ const Register: React.FC = () => {
 						'border-[3px]',
 						'border-solid',
 						'border-[#000000]',
-						'w-[650px]',
+						'w-[1400px]',
 						'h-[75px]',
 						'mx-auto',
 						'mt-[50px]'
@@ -37,14 +37,14 @@ const Register: React.FC = () => {
 				<input
 					type="email"
 					name="email"
-					placeholder="Email"
+					placeholder="Image URL"
 					className={clsx(
 						'absolute',
 						'text-3xl',
-						'mt-[154px]',
+						'mt-[192px]',
 						'border-black',
 						'mx-auto',
-						'w-[600px]',
+						'w-[1360px]',
 						'h-[75px]',
 						'justify-self-center',
 						'bg-transparent',
@@ -61,7 +61,7 @@ const Register: React.FC = () => {
 						'border-[3px]',
 						'border-solid',
 						'border-[#000000]',
-						'w-[650px]',
+						'w-[1400px]',
 						'h-[75px]',
 						'mx-auto',
 						'mt-[50px]'
@@ -71,14 +71,14 @@ const Register: React.FC = () => {
 				<input
 					type="password"
 					name="password"
-					placeholder="Password"
+					placeholder="Header"
 					className={clsx(
 						'absolute',
 						'text-3xl',
-						'mt-[279px]',
+						'mt-[317px]',
 						'border-black',
 						'mx-auto',
-						'w-[600px]',
+						'w-[1360px]',
 						'h-[75px]',
 						'justify-self-center',
 						'bg-transparent',
@@ -95,87 +95,76 @@ const Register: React.FC = () => {
 						'border-[3px]',
 						'border-solid',
 						'border-[#000000]',
-						'w-[650px]',
-						'h-[75px]',
+						'w-[1400px]',
+						'h-[500px]',
 						'mx-auto',
 						'mt-[50px]'
 					)}
 				></div>
 
-				<input
-					type="text"
+				<textarea
 					name="nickname"
-					placeholder="Nickname"
+					placeholder="Your thoughts"
 					className={clsx(
 						'absolute',
 						'text-3xl',
-						'mt-[405px]',
+						'mt-[444px]',
 						'border-black',
 						'mx-auto',
-						'w-[600px]',
-						'h-[75px]',
+						'w-[1360px]',
+						'h-[500px]',
 						'justify-self-center',
 						'bg-transparent',
-						'border-none'
+						'border-none',
+						'inline-flex',
+						'items-start',
+						'justify-start'
 					)}
-					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+					onChange={(e) => {
 						setNickname(e.target.value);
 					}}
-				></input>
+				></textarea>
 
-				<Link to="/" className={clsx('justify-self-center')}>
-					<button
-						className={clsx(
-							'w-[300px]',
-							'h-[75px]',
-							'bg-[#000000]',
-							'justify-self-center',
-							'mt-[50px]',
-							'rounded-[25px]',
-							'text-white',
-							'text-4xl'
-						)}
-						onClick={() => {
-							registerAxios(email, password, nickname, writeCredentialsToState);
-						}}
-					>
-						ENTER
-					</button>
-				</Link>
+				<div className={clsx('flex', 'justify-center', 'mt-[50px]')}>
+					<Link to="/" className={clsx()}>
+						<button
+							className={clsx(
+								'w-[300px]',
+								'h-[75px]',
+								'bg-[#807e7e]',
+								'rounded-[25px]',
+								'text-white',
+								'text-4xl',
+								'mx-5'
+							)}
+						>
+							CANCEL
+						</button>
+					</Link>
 
-				<p
-					className={clsx(
-						'w-auto',
-						'justify-self-center',
-						'mt-[20px]',
-						'text-[#807e7e]',
-						'text-2xl'
-					)}
-				>
-					already have an account?
-				</p>
-
-				<Link to="/login" className={clsx('justify-self-center')}>
-					<button
-						className={clsx(
-							'w-[300px]',
-							'h-[75px]',
-							'justify-self-center',
-							'mt-[20px]',
-							'rounded-[25px]',
-							'text-[#807e7e]',
-							'text-4xl',
-							'border-[3px]',
-							'border-solid',
-							'border-[#807e7e]'
-						)}
-					>
-						LOG IN
-					</button>
-				</Link>
+					<Link to="/" className={clsx()}>
+						<button
+							className={clsx(
+								'w-[300px]',
+								'h-[75px]',
+								'bg-[#000000]',
+								'rounded-[25px]',
+								'text-white',
+								'text-4xl',
+								'mx-5'
+							)}
+							onClick={() => {
+								registerAxios(email, password, nickname, writeCredentialsToState);
+							}}
+						>
+							CREATE
+						</button>
+					</Link>
+				</div>
+				<div className={clsx('h-[150px]')}></div>
 			</div>
 		</>
 	);
 };
 
-export default Register;
+export default CreatePost;

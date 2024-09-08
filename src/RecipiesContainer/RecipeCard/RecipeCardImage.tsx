@@ -1,12 +1,12 @@
 import React from 'react';
-import { recipeCardImage } from '../../ui/styles';
+import { postCardImage } from '../../ui/styles';
 
-interface RecipeCardImageProps {
+interface PostCardImageProps {
 	imgSrc: string;
 }
 
-const RecipeCardImage: React.FC<RecipeCardImageProps> = ({ imgSrc }) => {
-	return <img className={recipeCardImage} src={imgSrc} />;
+const PostCardImage: React.FC<PostCardImageProps> = ({ imgSrc }) => {
+	return <img className={postCardImage} src={imgSrc} />;
 };
 
-export default RecipeCardImage;
+export default PostCardImage;

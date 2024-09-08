@@ -1,23 +1,26 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import CreatePost from './Pages/CreatePost';
 import Home from './Pages/Home';
 import LogIn from './Pages/LogIn';
-import RecipePage from './Pages/RecipePage';
+import MyProfile from './Pages/MyProfile';
+import PostPage from './Pages/PostPage';
+import Register from './Pages/Register';
 
 function App(): JSX.Element {
-	const recipes = useSelector((state: any) => state.recipes);
-
-
-	
+	const posts = useSelector((state: any) => state.posts);
 
 	return (
 		<BrowserRouter>
 			<Routes>
-				<Route path="/login" element={<LogIn />} />
 				<Route index element={<Home />} />
-				{recipes.map((index) => (
-					<Route key={index} path="/recipes/:id" element={<RecipePage />} />
+				<Route path="/login" element={<LogIn />} />
+				<Route path="/register" element={<Register />} />
+				<Route path="/profile" element={<MyProfile />} />
+				<Route path="/create-post" element={<CreatePost />} />
+				{posts.map((index) => (
+					<Route key={index} path="/posts/:id" element={<PostPage />} />
 				))}
 			</Routes>
 		</BrowserRouter>

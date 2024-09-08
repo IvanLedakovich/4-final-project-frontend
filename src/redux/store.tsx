@@ -1,19 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
-import {
-	recipesCountReducer,
-	recipesLoadedReducer,
-	recipesReducer,
-	showMoreButtonReducer
-} from './recipes/reducer';
+import { postsLoadedReducer, postsReducer } from './posts/reducer';
 import { userReducer } from './user/reducer';
 
 const store = configureStore({
 	reducer: {
-		recipes: recipesReducer,
-		recipesCount: recipesCountReducer,
-		showMoreButton: showMoreButtonReducer,
-		recipesLoaded: recipesLoadedReducer,
-		user: userReducer
+		posts: postsReducer,
+		user: userReducer,
+		postsLoaded: postsLoadedReducer
 	}
 });
 

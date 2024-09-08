@@ -10,11 +10,11 @@ export const pizzaHeaderContainer = clsx(
 	'm:mt-[-400px]'
 );
 
-export const pizzaHeaderImage = clsx(
+export const homepageHeaderImage = clsx(
 	'w-full',
-	'h-[200px]',
-	'object-cover',
-	'm:h-[400px]'
+	// 'h-[200px]',
+	'object-cover'
+	// 'm:h-[400px]'
 );
 
 export const headerLineLeft = clsx(
@@ -127,11 +127,11 @@ export const recipeCard = clsx(
 	'xl:h-[685px]'
 );
 
-export const recipeCardImage = clsx(
+export const postCardImage = clsx(
 	'h-[260px]',
 	'w-full',
 	'object-cover',
-	'rounded-[10px]'
+	'rounded-[25px]'
 );
 
 export const recipeTagsContainer = clsx(
@@ -152,7 +152,7 @@ export const recipeTagContainer = clsx(
 	'border-[#c65f00]'
 );
 
-export const recipeName = clsx('grid', 'justify-left');
+export const postName = clsx('grid', 'justify-left');
 
 export const cuisineContainer = clsx(
 	'flex',

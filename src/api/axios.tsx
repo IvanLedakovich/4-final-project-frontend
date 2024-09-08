@@ -1,13 +1,63 @@
 import axios from 'axios';
 
 let allRecipes;
+let allPosts;
 
 const handleRequestError = (error: any) => {
 	console.error('Ошибка запроса:', error);
 	throw error;
 };
 
+export const logInAxios = (email: string, password: string, _callback) => {
+	axios
+		.post(`http://localhost:8000/api/login`, { email, password })
+
+		.then((res) => {
+			_callback(res.data);
+		})
+		.catch((error) => {
+			handleRequestError(error);
+			alert('Invalid credentials');
+		});
+};
+
+export const registerAxios = (
+	email: string,
+	password: string,
+	nickname: string,
+	_callback
+) => {
+	const body = {
+		email: email,
+		password: password,
+		nickname: nickname
+	};
+
+	axios
+		.post(`http://localhost:8000/api/register`, body)
+
+		.then((res) => {
+			_callback(res.data);
+		})
+		.catch((error) => {
+			handleRequestError(error);
+			alert('Invalid credentials');
+		});
+};
+
 export const searchRecipesAxios = (searchTerm: string, _callback) => {
+	axios
+		.get(`https://dummyjson.com/recipes/search?q=${searchTerm}`)
+
+		.then((res) => {
+			_callback(res.data.recipes);
+		})
+		.catch((error) => {
+			handleRequestError(error);
+		});
+};
+
+export const searchPostsAxios = (searchTerm: string, _callback) => {
 	axios
 		.get(`https://dummyjson.com/recipes/search?q=${searchTerm}`)
 
@@ -32,6 +82,22 @@ export const getAllRecipesAxios = (_callback) => {
 			});
 	} else {
 		_callback(allRecipes);
+	}
+};
+
+export const getAllPostsAxios = (_callback) => {
+	if (!allPosts) {
+		axios
+			.get(`http://localhost:8000/api/posts`)
+			.then((res) => {
+				allPosts = res.data;
+				_callback(res.data);
+			})
+			.catch((error) => {
+				handleRequestError(error);
+			});
+	} else {
+		_callback(allPosts);
 	}
 };
 

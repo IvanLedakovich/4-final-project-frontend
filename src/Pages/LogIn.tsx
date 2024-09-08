@@ -1,7 +1,23 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { logInAxios } from '../api/axios';
+import { fill } from '../redux/user/actionCreators';
 
 const LogIn: React.FC = () => {
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const user = useSelector((state: any) => state.user);
+	const navigate = useNavigate();
+
+	const dispatch = useDispatch();
+
+	const writeCredentialsToState = (res) => {
+		dispatch(fill(res));
+		navigate('/');
+	};
+
 	return (
 		<>
 			<div className={clsx('w-full', 'h-full', 'grid', 'justify-center')}>
@@ -36,6 +52,9 @@ const LogIn: React.FC = () => {
 						'bg-transparent',
 						'border-none'
 					)}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+						setEmail(e.target.value);
+					}}
 				></input>
 
 				<div
@@ -67,22 +86,30 @@ const LogIn: React.FC = () => {
 						'bg-transparent',
 						'border-none'
 					)}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+						setPassword(e.target.value);
+					}}
 				></input>
 
-				<button
-					className={clsx(
-						'w-[300px]',
-						'h-[75px]',
-						'bg-[#000000]',
-						'justify-self-center',
-						'mt-[50px]',
-						'rounded-[25px]',
-						'text-white',
-						'text-4xl'
-					)}
-				>
-					ENTER
-				</button>
+				<Link to="/" className={clsx('justify-self-center')}>
+					<button
+						className={clsx(
+							'w-[300px]',
+							'h-[75px]',
+							'bg-[#000000]',
+							'justify-self-center',
+							'mt-[50px]',
+							'rounded-[25px]',
+							'text-white',
+							'text-4xl'
+						)}
+						onClick={() => {
+							logInAxios(email, password, writeCredentialsToState);
+						}}
+					>
+						ENTER
+					</button>
+				</Link>
 
 				<p
 					className={clsx(
@@ -96,22 +123,24 @@ const LogIn: React.FC = () => {
 					don't have an account?
 				</p>
 
-				<button
-					className={clsx(
-						'w-[300px]',
-						'h-[75px]',
-						'justify-self-center',
-						'mt-[0px]',
-						'rounded-[25px]',
-						'text-[#807e7e]',
-						'text-4xl',
-						'border-[3px]',
-						'border-solid',
-						'border-[#807e7e]'
-					)}
-				>
-					REGISTER
-				</button>
+				<Link to="/register" className={clsx('justify-self-center')}>
+					<button
+						className={clsx(
+							'w-[300px]',
+							'h-[75px]',
+							'justify-self-center',
+							'mt-[20px]',
+							'rounded-[25px]',
+							'text-[#807e7e]',
+							'text-4xl',
+							'border-[3px]',
+							'border-solid',
+							'border-[#807e7e]'
+						)}
+					>
+						REGISTER
+					</button>
+				</Link>
 			</div>
 		</>
 	);
