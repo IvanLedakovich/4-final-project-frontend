@@ -13,7 +13,7 @@ const PostsContainer: React.FC = () => {
 			className={clsx(
 				'grid',
 				'justify-center',
-				'grid-cols-[repeat(auto-fit,minmax(410px,auto))]',
+				'grid-cols-[repeat(auto-fit,minmax(410px,440px))]',
 				'gap-[2.5em]',
 				'mt-[50px]',
 				'mx-[45px]',

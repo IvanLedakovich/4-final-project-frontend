@@ -7,6 +7,7 @@ import LogIn from './Pages/LogIn';
 import MyProfile from './Pages/MyProfile';
 import PostPage from './Pages/PostPage';
 import Register from './Pages/Register';
+import UpdateProfile from './Pages/UpdateProfile';
 
 function App(): JSX.Element {
 	const posts = useSelector((state: any) => state.posts);
@@ -18,6 +19,7 @@ function App(): JSX.Element {
 				<Route path="/login" element={<LogIn />} />
 				<Route path="/register" element={<Register />} />
 				<Route path="/profile" element={<MyProfile />} />
+				<Route path="/change-info" element={<UpdateProfile />} />
 				<Route path="/create-post" element={<CreatePost />} />
 				{posts.map((index) => (
 					<Route key={index} path="/posts/:id" element={<PostPage />} />

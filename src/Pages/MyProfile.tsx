@@ -2,7 +2,11 @@ import clsx from 'clsx';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
-import { searchPostsAxios, searchRecipesAxios } from '../api/axios';
+import {
+	logOutAxios,
+	searchPostsAxios,
+	searchRecipesAxios
+} from '../api/axios';
 import defaultUserIcon from '../images/defaultUserIcon.png';
 import PostsContainer from '../RecipiesContainer/PostsContainer';
 import { fillInitially, postsLoaded } from '../redux/posts/actionCreators';
@@ -11,6 +15,10 @@ const MyProfile: React.FC = () => {
 	const user = useSelector((state: any) => state.user);
 
 	const dispatch = useDispatch();
+
+	const refreshPage = () => {
+		window.location.reload();
+	};
 
 	const dispatchFillInitially = (res) => {
 		dispatch(fillInitially(res));
@@ -66,7 +74,9 @@ const MyProfile: React.FC = () => {
 			>
 				<img
 					className={clsx('w-[150px], h-[150px]', 'rounded-[75px]', 'ml-[5%]')}
-					src={user ? user.imageUrl : defaultUserIcon}
+					src={
+						user ? (user.imageUrl ? user.imageUrl : defaultUserIcon) : defaultUserIcon
+					}
 					alt="pizzaHeader"
 				/>
 				<h1 className={clsx('text-white', 'text-4xl', 'ml-10', 'font-bold')}>
@@ -83,7 +93,7 @@ const MyProfile: React.FC = () => {
 					'mt-[30px]'
 				)}
 			>
-				{user ? user.description : ''}
+				{user ? (user.description ? user.description : 'No bio') : 'No bio'}
 			</p>
 
 			<div className={clsx('flex', 'w-[90%]', 'h-[50px]', 'mx-[5%]', 'mt-[30px]')}>
@@ -91,19 +101,38 @@ const MyProfile: React.FC = () => {
 				<p className={clsx('text-black', 'text-3xl', 'ml-5')}>
 					{user ? user.email : ''}
 				</p>
+
 				<button
 					className={clsx(
-						'w-[15%]',
-						'ml-auto',
+						'w-[200px]',
 						'h-[50px]',
-						'bg-[#000000]',
+						'bg-[#807e7e]',
 						'rounded-[15px]',
 						'text-white',
-						'text-2xl'
+						'text-2xl',
+						'ml-[45%]'
 					)}
+					onClick={() => {
+						logOutAxios(refreshPage);
+					}}
 				>
-					Change info
+					Log out
 				</button>
+
+				<Link to={`/change-info`} className={clsx('ml-auto')}>
+					<button
+						className={clsx(
+							'w-[200px]',
+							'h-[50px]',
+							'bg-[#000000]',
+							'rounded-[15px]',
+							'text-white',
+							'text-2xl'
+						)}
+					>
+						Change info
+					</button>
+				</Link>
 			</div>
 
 			<div

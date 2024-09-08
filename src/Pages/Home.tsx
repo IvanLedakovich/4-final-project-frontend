@@ -5,7 +5,8 @@ import { Link, Navigate } from 'react-router-dom';
 import {
 	getAllPostsAxios,
 	searchPostsAxios,
-	searchRecipesAxios
+	searchRecipesAxios,
+	sortByLikesAxios
 } from '../api/axios';
 import defaultUserIcon from '../images/defaultUserIcon.png';
 import studioLogo from '../images/studioLogo.png';
@@ -37,8 +38,6 @@ const Home: React.FC = () => {
 	if (!user) {
 		Navigate({ to: '/login' });
 	}
-
-	console.log(user);
 
 	return (
 		<>
@@ -90,7 +89,13 @@ const Home: React.FC = () => {
 							'border-solid',
 							'border-[#ffffff]'
 						)}
-						src={user ? user.imageUrl : defaultUserIcon}
+						src={
+							user
+								? user.imageUrl
+									? user.imageUrl
+									: defaultUserIcon
+								: defaultUserIcon
+						}
 						alt=""
 					/>
 				</Link>
@@ -137,6 +142,10 @@ const Home: React.FC = () => {
 						'border-solid',
 						'border-[#000000]'
 					)}
+					onClick={() => {
+						getAllPostsAxios(dispatchFillInitially);
+						dispatchPostsLoaded(true);
+					}}
 				>
 					Default
 				</button>
@@ -154,6 +163,10 @@ const Home: React.FC = () => {
 						'border-solid',
 						'border-[#000000]'
 					)}
+					onClick={() => {
+						sortByLikesAxios(dispatchFillInitially);
+						dispatchPostsLoaded(true);
+					}}
 				>
 					Most liked
 				</button>

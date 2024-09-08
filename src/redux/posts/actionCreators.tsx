@@ -1,9 +1,9 @@
 import * as a from './actionTypes';
 
-export const fillInitially = (recipes) => {
+export const fillInitially = (posts) => {
 	return {
 		type: a.FILL_INITIALLY,
-		payload: recipes
+		payload: posts
 	};
 };
 

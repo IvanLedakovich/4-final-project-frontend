@@ -227,7 +227,7 @@ const UpdateProfile: React.FC = () => {
 					</button>
 				</Link>
 			</div>
-			{/* <div className={clsx('h-[150px]')}></div> */}
+			<div className={clsx('h-[150px]')}></div>
 		</>
 	);
 };
