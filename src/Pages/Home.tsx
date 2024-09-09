@@ -6,6 +6,7 @@ import {
 	getAllPostsAxios,
 	searchPostsAxios,
 	searchRecipesAxios,
+	sortByAgeAxios,
 	sortByLikesAxios
 } from '../api/axios';
 import defaultUserIcon from '../images/defaultUserIcon.png';
@@ -184,6 +185,10 @@ const Home: React.FC = () => {
 						'border-solid',
 						'border-[#000000]'
 					)}
+					onClick={() => {
+						sortByAgeAxios(dispatchFillInitially);
+						dispatchPostsLoaded(true);
+					}}
 				>
 					Oldest
 				</button>

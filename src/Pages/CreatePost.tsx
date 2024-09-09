@@ -2,13 +2,12 @@ import clsx from 'clsx';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { registerAxios } from '../api/axios';
 import { fill } from '../redux/user/actionCreators';
 
 const CreatePost: React.FC = () => {
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-	const [nickname, setNickname] = useState('');
+	const [imageUrl, setImageUrl] = useState('');
+	const [header, setHeader] = useState('');
+	const [text, setText] = useState('');
 
 	const dispatch = useDispatch();
 
@@ -36,7 +35,7 @@ const CreatePost: React.FC = () => {
 
 				<input
 					type="email"
-					name="email"
+					name="imageUrl"
 					placeholder="Image URL"
 					className={clsx(
 						'absolute',
@@ -51,7 +50,7 @@ const CreatePost: React.FC = () => {
 						'border-none'
 					)}
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-						setEmail(e.target.value);
+						setImageUrl(e.target.value);
 					}}
 				></input>
 
@@ -70,7 +69,7 @@ const CreatePost: React.FC = () => {
 
 				<input
 					type="password"
-					name="password"
+					name="header"
 					placeholder="Header"
 					className={clsx(
 						'absolute',
@@ -85,7 +84,7 @@ const CreatePost: React.FC = () => {
 						'border-none'
 					)}
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-						setPassword(e.target.value);
+						setHeader(e.target.value);
 					}}
 				></input>
 
@@ -103,7 +102,7 @@ const CreatePost: React.FC = () => {
 				></div>
 
 				<textarea
-					name="nickname"
+					name="text"
 					placeholder="Your thoughts"
 					className={clsx(
 						'absolute',
@@ -121,7 +120,7 @@ const CreatePost: React.FC = () => {
 						'justify-start'
 					)}
 					onChange={(e) => {
-						setNickname(e.target.value);
+						setText(e.target.value);
 					}}
 				></textarea>
 
@@ -154,7 +153,7 @@ const CreatePost: React.FC = () => {
 								'mx-5'
 							)}
 							onClick={() => {
-								registerAxios(email, password, nickname, writeCredentialsToState);
+								createPostAxios(imageUrl, header, text);
 							}}
 						>
 							CREATE

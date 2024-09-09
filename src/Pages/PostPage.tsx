@@ -1,16 +1,28 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
+import { toggleLikeAxios } from '../api/axios';
 import heartEmpty from '../images/heartEmpty.svg';
+import heartFull from '../images/heartFull.svg';
 import postImage from '../images/postImage.png';
 
 const PostPage: React.FC = () => {
+	const user = useSelector((state: any) => state.user);
 	let { id } = useParams();
 	const post = useSelector((state: any) =>
 		state.posts.find((post) => post.id === Number(id))
 	);
+
+	const [iLikedThisPost, setILikedThisPost] = useState(
+		user.likedPosts.find((element) => element == id)
+	);
+
+	const toggleLike = () => {
+		toggleLikeAxios(user, post.id);
+		setILikedThisPost(!iLikedThisPost);
+	};
 
 	return (
 		<>
@@ -68,11 +80,14 @@ const PostPage: React.FC = () => {
 			<div className={clsx('flex', 'items-center', 'mt-[50px]')}>
 				<img
 					className={clsx('w-[22px], h-[22px]', 'ml-[5%]')}
-					src={heartEmpty}
+					src={iLikedThisPost ? heartFull : heartEmpty}
 					alt="heartImage"
+					onClick={toggleLike}
 				/>
 
-				<p className={clsx('text-xl', 'font-semibold', 'ml-2')}>0</p>
+				<p className={clsx('text-xl', 'font-semibold', 'ml-2')}>
+					{post.likesQuantity}
+				</p>
 			</div>
 
 			<div className={clsx('h-150px')}></div>
