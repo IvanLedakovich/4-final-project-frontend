@@ -69,13 +69,20 @@ export const registerAxios = (
 		});
 };
 
-export const toggleLikeAxios = (user, id, _callback, iLikedThisPost) => {
+export const toggleLikeOnAccountAxios = (
+	user,
+	post,
+	_callback,
+	_callback2,
+	iLikedThisPost
+) => {
 	let newUser = JSON.parse(JSON.stringify(user));
+	let newPost = JSON.parse(JSON.stringify(post));
 
 	if (iLikedThisPost) {
-		newUser.likedPosts = user.likedPosts.filter((e) => e !== id);
+		newUser.likedPosts = user.likedPosts.filter((e) => e !== Number(post.id));
 	} else {
-		newUser.likedPosts.push(id);
+		newUser.likedPosts.push(Number(post.id));
 	}
 
 	axios
@@ -83,10 +90,26 @@ export const toggleLikeAxios = (user, id, _callback, iLikedThisPost) => {
 
 		.then(() => {
 			_callback(newUser);
+			likeOnPostAxios(Number(post.id), iLikedThisPost, _callback2);
 		})
 		.catch((error) => {
 			handleRequestError(error);
 			alert('Invalid credentials');
+		});
+};
+
+export const likeOnPostAxios = (postId, iLikedThisPost, _callback) => {
+	let value = iLikedThisPost ? 1 : -1;
+
+	axios
+		.put(`http://localhost:8000/api/posts/like`, { postId, value })
+
+		.then(() => {
+			getAllPostsAxios(_callback);
+		})
+		.catch((error) => {
+			handleRequestError(error);
+			alert('Could not update likes value');
 		});
 };
 

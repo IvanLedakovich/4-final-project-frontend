@@ -3,10 +3,11 @@ import React, { useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-import { toggleLikeAxios } from '../api/axios';
+import { toggleLikeOnAccountAxios } from '../api/axios';
 import heartEmpty from '../images/heartEmpty.svg';
 import heartFull from '../images/heartFull.svg';
 import postImage from '../images/postImage.png';
+import { fillInitially } from '../redux/posts/actionCreators';
 import { fill } from '../redux/user/actionCreators';
 
 const PostPage: React.FC = () => {
@@ -24,7 +25,17 @@ const PostPage: React.FC = () => {
 
 	const toggleLike = () => {
 		setILikedThisPost(!iLikedThisPost);
-		toggleLikeAxios(user, Number(post.id), refreshUser, iLikedThisPost);
+		toggleLikeOnAccountAxios(
+			user,
+			post,
+			refreshUser,
+			refreshPosts,
+			iLikedThisPost
+		);
+	};
+
+	const refreshPosts = (posts) => {
+		dispatch(fillInitially(posts));
 	};
 
 	const refreshUser = (newUser) => {

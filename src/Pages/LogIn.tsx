@@ -14,7 +14,6 @@ const LogIn: React.FC = () => {
 	const dispatch = useDispatch();
 
 	const writeCredentialsToState = (res) => {
-		// res.likedPosts = [0];
 		dispatch(fill(res));
 		navigate('/');
 	};
