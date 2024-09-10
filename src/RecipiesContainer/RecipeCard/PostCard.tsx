@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import heartEmpty from '../../images/heartEmpty.svg';
@@ -17,7 +17,9 @@ const PostCard: React.FC<{
 }> = ({ id, imageUrl, header, text, authorId, likesQuantity }) => {
 	const user = useSelector((state: any) => state.user);
 
-	let iLikedThisPost = user.likedPosts.find((element) => element == id);
+	const [iLikedThisPost, setILikedThisPost] = useState(
+		user.likedPosts.find((element) => element == id)
+	);
 
 	return (
 		<>

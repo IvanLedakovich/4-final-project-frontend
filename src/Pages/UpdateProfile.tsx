@@ -14,7 +14,6 @@ const UpdateProfile: React.FC = () => {
 
 	const writeCredentialsToState = (data) => {
 		dispatch(fill(data));
-		console.log();
 	};
 
 	return (

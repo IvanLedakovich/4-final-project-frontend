@@ -1,12 +1,13 @@
 import clsx from 'clsx';
 import React, { useState } from 'react';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { toggleLikeAxios } from '../api/axios';
 import heartEmpty from '../images/heartEmpty.svg';
 import heartFull from '../images/heartFull.svg';
 import postImage from '../images/postImage.png';
+import { fill } from '../redux/user/actionCreators';
 
 const PostPage: React.FC = () => {
 	const user = useSelector((state: any) => state.user);
@@ -15,13 +16,19 @@ const PostPage: React.FC = () => {
 		state.posts.find((post) => post.id === Number(id))
 	);
 
+	const dispatch = useDispatch();
+
 	const [iLikedThisPost, setILikedThisPost] = useState(
 		user.likedPosts.find((element) => element == id)
 	);
 
 	const toggleLike = () => {
-		toggleLikeAxios(user, post.id);
 		setILikedThisPost(!iLikedThisPost);
+		toggleLikeAxios(user, post.id, refreshUser, iLikedThisPost);
+	};
+
+	const refreshUser = (res) => {
+		dispatch(fill(res));
 	};
 
 	return (

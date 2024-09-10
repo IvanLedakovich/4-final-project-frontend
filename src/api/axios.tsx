@@ -46,10 +46,15 @@ export const registerAxios = (
 	nickname: string,
 	_callback
 ) => {
+	let myPosts = Array(1).fill(0);
+	let likedPosts = Array(1).fill(0);
+
 	const body = {
 		email: email,
 		password: password,
-		nickname: nickname
+		nickname: nickname,
+		myPosts: myPosts,
+		likedPosts: likedPosts
 	};
 
 	axios
@@ -64,16 +69,19 @@ export const registerAxios = (
 		});
 };
 
-export const toggleLikeAxios = (user, id) => {
-	user.likedPosts = user.likedPosts.filter((e) => e !== 17);
-
-	console.log(user);
+export const toggleLikeAxios = (user, id, _callback, iLikedThisPost) => {
+	let newUser = JSON.parse(JSON.stringify(user));
+	if (iLikedThisPost) {
+		newUser.likedPosts = newUser.likedPosts.filter((e) => e !== id);
+	} else {
+		newUser.likedPosts = newUser.likedPosts.push(id);
+	}
 
 	axios
-		.post(`http://localhost:8000/api/update`, user)
+		.post(`http://localhost:8000/api/update`, newUser)
 
-		.then(() => {
-			console.log('called');
+		.then((res) => {
+			_callback(res.data);
 		})
 		.catch((error) => {
 			handleRequestError(error);
