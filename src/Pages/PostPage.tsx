@@ -24,11 +24,11 @@ const PostPage: React.FC = () => {
 
 	const toggleLike = () => {
 		setILikedThisPost(!iLikedThisPost);
-		toggleLikeAxios(user, post.id, refreshUser, iLikedThisPost);
+		toggleLikeAxios(user, Number(post.id), refreshUser, iLikedThisPost);
 	};
 
-	const refreshUser = (res) => {
-		dispatch(fill(res));
+	const refreshUser = (newUser) => {
+		dispatch(fill(newUser));
 	};
 
 	return (

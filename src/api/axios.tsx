@@ -71,17 +71,18 @@ export const registerAxios = (
 
 export const toggleLikeAxios = (user, id, _callback, iLikedThisPost) => {
 	let newUser = JSON.parse(JSON.stringify(user));
+
 	if (iLikedThisPost) {
-		newUser.likedPosts = newUser.likedPosts.filter((e) => e !== id);
+		newUser.likedPosts = user.likedPosts.filter((e) => e !== id);
 	} else {
-		newUser.likedPosts = newUser.likedPosts.push(id);
+		newUser.likedPosts.push(id);
 	}
 
 	axios
 		.post(`http://localhost:8000/api/update`, newUser)
 
-		.then((res) => {
-			_callback(res.data);
+		.then(() => {
+			_callback(newUser);
 		})
 		.catch((error) => {
 			handleRequestError(error);
