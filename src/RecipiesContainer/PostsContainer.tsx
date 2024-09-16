@@ -30,7 +30,7 @@ const PostsContainer: React.FC = () => {
 								key={element.id}
 								id={element.id}
 								imageUrl={element.imageUrl}
-								header={element.header.substring(0, MAX_HEADER_LENGTH)}
+								header={element.header.substring(0, MAX_HEADER_LENGTH).toUpperCase()}
 								text={element.text}
 								authorId={element.authorId}
 								likesQuantity={element.likesQuantity}

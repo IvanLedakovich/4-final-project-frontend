@@ -20,6 +20,7 @@ export const logInAxios = (email: string, password: string, _callback) => {
 
 		.then((res) => {
 			const token = Cookies.get('jwt');
+			console.log(res.data);
 			_callback(res.data);
 		})
 		.catch((error) => {
@@ -77,7 +78,6 @@ export const toggleLikeOnAccountAxios = (
 	iLikedThisPost
 ) => {
 	let newUser = JSON.parse(JSON.stringify(user));
-	let newPost = JSON.parse(JSON.stringify(post));
 
 	if (iLikedThisPost) {
 		newUser.likedPosts = user.likedPosts.filter((e) => e !== Number(post.id));
@@ -98,8 +98,24 @@ export const toggleLikeOnAccountAxios = (
 		});
 };
 
+export const updateProfileAxios = (user, _callback) => {
+	axios
+		.post(`http://localhost:8000/api/update`, user)
+
+		.then(() => {
+			_callback(user);
+		})
+		.catch((error) => {
+			handleRequestError(error);
+			alert('Error');
+		});
+};
+
 export const likeOnPostAxios = (postId, iLikedThisPost, _callback) => {
-	let value = iLikedThisPost ? 1 : -1;
+	let value = iLikedThisPost ? -1 : 1;
+
+	console.log(postId);
+	console.log(value);
 
 	axios
 		.put(`http://localhost:8000/api/posts/like`, { postId, value })
@@ -202,6 +218,37 @@ export const sortByAgeAxios = async (_callback) => {
 		.then((res) => {
 			allPosts = res.data;
 			_callback(res.data.sort((a, b) => a.id - b.id).reverse());
+		})
+		.catch((error) => {
+			handleRequestError(error);
+		});
+};
+
+export const getMyPostsAxios = async (userId, _callback) => {
+	axios
+		.get(`http://localhost:8000/api/posts`)
+		.then((res) => {
+			allPosts = res.data;
+			_callback(res.data.filter((post) => post.authorId == userId));
+		})
+		.catch((error) => {
+			handleRequestError(error);
+		});
+};
+
+export const getPostsILikedAxios = async (user, _callback) => {
+	axios
+		.get(`http://localhost:8000/api/posts`)
+		.then((res) => {
+			allPosts = res.data;
+			let posts = new Array();
+			user.likedPosts.forEach((likedPostId) => {
+				if (res.data.find((element) => element.id == likedPostId)) {
+					posts.push(res.data.find((element) => element.id == likedPostId));
+				}
+			});
+
+			_callback(posts);
 		})
 		.catch((error) => {
 			handleRequestError(error);

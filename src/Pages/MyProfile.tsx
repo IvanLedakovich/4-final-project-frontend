@@ -3,6 +3,8 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
 import {
+	getMyPostsAxios,
+	getPostsILikedAxios,
 	logOutAxios,
 	searchPostsAxios,
 	searchRecipesAxios
@@ -34,6 +36,14 @@ const MyProfile: React.FC = () => {
 
 	const searchPosts = (e: React.ChangeEvent<HTMLInputElement>) => {
 		searchPostsAxios(e.target.value, dispatchFillInitially);
+	};
+
+	const getMyPosts = () => {
+		getMyPostsAxios(user.id, dispatchFillInitially);
+	};
+
+	const getPostsILiked = () => {
+		getPostsILikedAxios(user, dispatchFillInitially);
 	};
 
 	if (!user) {
@@ -152,6 +162,7 @@ const MyProfile: React.FC = () => {
 						'border-solid',
 						'border-[#000000]'
 					)}
+					onClick={getMyPosts}
 				>
 					My posts
 				</button>
@@ -170,6 +181,7 @@ const MyProfile: React.FC = () => {
 						'border-solid',
 						'border-[#000000]'
 					)}
+					onClick={getPostsILiked}
 				>
 					Liked posts
 				</button>

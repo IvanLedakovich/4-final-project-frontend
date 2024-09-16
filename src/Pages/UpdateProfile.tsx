@@ -1,19 +1,37 @@
 import clsx from 'clsx';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { registerAxios } from '../api/axios';
+import { updateProfileAxios } from '../api/axios';
 import { fill } from '../redux/user/actionCreators';
 
 const UpdateProfile: React.FC = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [nickname, setNickname] = useState('');
+	const [description, setDescription] = useState('');
+	const [imageUrl, setImageUrl] = useState('');
+	const user = useSelector((state: any) => state.user);
 
 	const dispatch = useDispatch();
 
 	const writeCredentialsToState = (data) => {
 		dispatch(fill(data));
+	};
+
+	const updateProfile = () => {
+		let newUser = {
+			id: user.id,
+			email: email ? email : user.email,
+			password: password,
+			nickname: nickname ? nickname : user.nickname,
+			description: description ? description : user.description,
+			imageUrl: imageUrl ? imageUrl : user.imageUrl,
+			myPosts: user.myPosts,
+			likedPosts: user.likedPosts
+		};
+
+		updateProfileAxios(newUser, writeCredentialsToState);
 	};
 
 	return (
@@ -30,6 +48,7 @@ const UpdateProfile: React.FC = () => {
 						type="email"
 						name="email"
 						placeholder="Email"
+						defaultValue={user.email}
 						className={clsx(
 							'absolute',
 							'text-3xl',
@@ -60,7 +79,7 @@ const UpdateProfile: React.FC = () => {
 					<input
 						type="password"
 						name="password"
-						placeholder="Password"
+						placeholder="Fill to change the password"
 						className={clsx(
 							'absolute',
 							'text-3xl',
@@ -73,7 +92,7 @@ const UpdateProfile: React.FC = () => {
 							'ml-[1%]'
 						)}
 						onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-							setEmail(e.target.value);
+							setPassword(e.target.value);
 						}}
 					></input>
 
@@ -91,9 +110,10 @@ const UpdateProfile: React.FC = () => {
 					></div>
 
 					<input
-						type="password"
-						name="password"
+						type="text"
+						name="nickname"
 						placeholder="Nickname"
+						defaultValue={user.nickname}
 						className={clsx(
 							'absolute',
 							'text-3xl',
@@ -106,7 +126,7 @@ const UpdateProfile: React.FC = () => {
 							'ml-[1%]'
 						)}
 						onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-							setEmail(e.target.value);
+							setNickname(e.target.value);
 						}}
 					></input>
 
@@ -124,9 +144,10 @@ const UpdateProfile: React.FC = () => {
 					></div>
 
 					<input
-						type="password"
-						name="password"
+						type="text"
+						name="imageUrl"
 						placeholder="Avatar URL"
+						defaultValue={user.imageUrl}
 						className={clsx(
 							'absolute',
 							'text-3xl',
@@ -139,7 +160,7 @@ const UpdateProfile: React.FC = () => {
 							'ml-[1%]'
 						)}
 						onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-							setEmail(e.target.value);
+							setImageUrl(e.target.value);
 						}}
 					></input>
 
@@ -158,24 +179,24 @@ const UpdateProfile: React.FC = () => {
 				</div>
 
 				<div className={clsx('h-[500px]', 'ml-[100px]', 'w-[750px]')}>
-					<input
-						type="email"
-						name="email"
+					<textarea
+						name="description"
 						placeholder="Description"
+						defaultValue={user.description}
 						className={clsx(
 							'absolute',
 							'text-3xl',
 							'border-black',
-							'w-[560px]',
-							'h-[75px]',
+							'w-[700px]',
+							'h-[390px]',
 							'bg-transparent',
 							'border-none',
 							'ml-[1%]'
 						)}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-							setEmail(e.target.value);
+						onChange={(e) => {
+							setDescription(e.target.value);
 						}}
-					></input>
+					></textarea>
 
 					<div
 						className={clsx(
@@ -191,7 +212,7 @@ const UpdateProfile: React.FC = () => {
 				</div>
 			</div>
 			<div className={clsx('flex', 'justify-center')}>
-				<Link to="/login" className={clsx()}>
+				<Link to="/" className={clsx()}>
 					<button
 						className={clsx(
 							'w-[300px]',
@@ -207,7 +228,7 @@ const UpdateProfile: React.FC = () => {
 					</button>
 				</Link>
 
-				<Link to="/" className={clsx()}>
+				<Link to="/profile" className={clsx()}>
 					<button
 						className={clsx(
 							'w-[300px]',
@@ -218,9 +239,7 @@ const UpdateProfile: React.FC = () => {
 							'text-4xl',
 							'mx-5'
 						)}
-						onClick={() => {
-							registerAxios(email, password, nickname, writeCredentialsToState);
-						}}
+						onClick={updateProfile}
 					>
 						UPDATE
 					</button>

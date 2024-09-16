@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { createPostAxios } from '../api/axios';
 import { fill } from '../redux/user/actionCreators';
 
 const CreatePost: React.FC = () => {
@@ -34,7 +35,7 @@ const CreatePost: React.FC = () => {
 				></div>
 
 				<input
-					type="email"
+					type="text"
 					name="imageUrl"
 					placeholder="Image URL"
 					className={clsx(
@@ -68,7 +69,7 @@ const CreatePost: React.FC = () => {
 				></div>
 
 				<input
-					type="password"
+					type="text"
 					name="header"
 					placeholder="Header"
 					className={clsx(

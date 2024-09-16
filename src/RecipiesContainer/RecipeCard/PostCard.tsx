@@ -50,7 +50,7 @@ const PostCard: React.FC<{
 							<h3
 								className={clsx(
 									'w-auto',
-									'ml-3',
+									'mx-3',
 									'text-2xl',
 									'mt-[4%]',
 									'mb-[2%]',

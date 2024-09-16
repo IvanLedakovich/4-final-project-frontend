@@ -190,11 +190,13 @@ const Home: React.FC = () => {
 						dispatchPostsLoaded(true);
 					}}
 				>
-					Oldest
+					Newest
 				</button>
 			</div>
 
 			<PostsContainer />
+
+			<div className={clsx('h-[150px]')}></div>
 		</>
 	);
 };
