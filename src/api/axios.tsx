@@ -20,7 +20,6 @@ export const logInAxios = (email: string, password: string, _callback) => {
 
 		.then((res) => {
 			const token = Cookies.get('jwt');
-			console.log(res.data);
 			_callback(res.data);
 		})
 		.catch((error) => {
@@ -113,9 +112,6 @@ export const updateProfileAxios = (user, _callback) => {
 
 export const likeOnPostAxios = (postId, iLikedThisPost, _callback) => {
 	let value = iLikedThisPost ? -1 : 1;
-
-	console.log(postId);
-	console.log(value);
 
 	axios
 		.put(`http://localhost:8000/api/posts/like`, { postId, value })
