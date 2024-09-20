@@ -10,21 +10,21 @@ const CreatePost: React.FC = () => {
 
 	const dispatch = useDispatch();
 
-	const [imageUrl, setImageUrl] = useState('');
+	const [imageFile, setimageFile] = useState('');
 	const [header, setHeader] = useState('');
 	const [text, setText] = useState('');
-	const [imageUrlError, setImageUrlError] = useState(
+	const [imageFileError, setimageFileError] = useState(
 		'The image URL can not be empty.'
 	);
 	const [headerError, setHeaderError] = useState('The header can not be empty.');
 
-	const handleImageUrlChange = (e) => {
-		setImageUrl(e.target.value);
+	const handleimageFileChange = (e) => {
+		setimageFile(e.target.value);
 
-		if (!imageUrl) {
-			setImageUrlError('The image URL can not be empty.');
+		if (!imageFile) {
+			setimageFileError('The image URL can not be empty.');
 		} else {
-			setImageUrlError('');
+			setimageFileError('');
 		}
 	};
 
@@ -39,8 +39,8 @@ const CreatePost: React.FC = () => {
 	};
 
 	const handleCreateClick = () => {
-		if (!imageUrlError && !headerError && imageUrl && header) {
-			createPostAxios(imageUrl, header, text);
+		if (!imageFileError && !headerError && imageFile && header) {
+			createPostAxios(imageFile, header, text);
 			navigate('/post/created');
 		}
 	};
@@ -68,8 +68,8 @@ const CreatePost: React.FC = () => {
 				></div>
 
 				<input
-					type="text"
-					name="imageUrl"
+					type="file"
+					name="imageFile"
 					placeholder="Image URL"
 					className={clsx(
 						'absolute',
@@ -84,13 +84,13 @@ const CreatePost: React.FC = () => {
 						'border-none'
 					)}
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-						handleImageUrlChange(e);
+						handleimageFileChange(e);
 					}}
 				></input>
 
-				{imageUrlError && (
+				{imageFileError && (
 					<p className={clsx('absolute', 'ml-[5%]', 'mt-[18%]', 'text-[#FF0000]')}>
-						{imageUrlError}
+						{imageFileError}
 					</p>
 				)}
 
