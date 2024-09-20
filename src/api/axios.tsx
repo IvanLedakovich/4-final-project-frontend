@@ -11,7 +11,7 @@ axios.defaults.withCredentials = true;
 
 const handleRequestError = (error: any) => {
 	console.error('Ошибка запроса:', error);
-	throw error;
+	// throw error;
 };
 
 export const logInAxios = (email: string, password: string, _callback) => {
@@ -24,7 +24,7 @@ export const logInAxios = (email: string, password: string, _callback) => {
 		})
 		.catch((error) => {
 			handleRequestError(error);
-			alert('Invalid credentials');
+			_callback();
 		});
 };
 

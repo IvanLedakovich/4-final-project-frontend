@@ -1,16 +1,49 @@
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { createPostAxios } from '../api/axios';
 import { fill } from '../redux/user/actionCreators';
 
 const CreatePost: React.FC = () => {
+	const navigate = useNavigate();
+
+	const dispatch = useDispatch();
+
 	const [imageUrl, setImageUrl] = useState('');
 	const [header, setHeader] = useState('');
 	const [text, setText] = useState('');
+	const [imageUrlError, setImageUrlError] = useState(
+		'The image URL can not be empty.'
+	);
+	const [headerError, setHeaderError] = useState('The header can not be empty.');
 
-	const dispatch = useDispatch();
+	const handleImageUrlChange = (e) => {
+		setImageUrl(e.target.value);
+
+		if (!imageUrl) {
+			setImageUrlError('The image URL can not be empty.');
+		} else {
+			setImageUrlError('');
+		}
+	};
+
+	const handleHeaderChange = (e) => {
+		setHeader(e.target.value);
+
+		if (!header) {
+			setHeaderError('The header can not be empty.');
+		} else {
+			setHeaderError('');
+		}
+	};
+
+	const handleCreateClick = () => {
+		if (!imageUrlError && !headerError && imageUrl && header) {
+			createPostAxios(imageUrl, header, text);
+			navigate('/post/created');
+		}
+	};
 
 	const writeCredentialsToState = (data) => {
 		dispatch(fill(data));
@@ -51,9 +84,15 @@ const CreatePost: React.FC = () => {
 						'border-none'
 					)}
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-						setImageUrl(e.target.value);
+						handleImageUrlChange(e);
 					}}
 				></input>
+
+				{imageUrlError && (
+					<p className={clsx('absolute', 'ml-[5%]', 'mt-[18%]', 'text-[#FF0000]')}>
+						{imageUrlError}
+					</p>
+				)}
 
 				<div
 					className={clsx(
@@ -85,9 +124,15 @@ const CreatePost: React.FC = () => {
 						'border-none'
 					)}
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-						setHeader(e.target.value);
+						handleHeaderChange(e);
 					}}
 				></input>
+
+				{headerError && (
+					<p className={clsx('absolute', 'ml-[5%]', 'mt-[26%]', 'text-[#FF0000]')}>
+						{headerError}
+					</p>
+				)}
 
 				<div
 					className={clsx(
@@ -142,24 +187,22 @@ const CreatePost: React.FC = () => {
 						</button>
 					</Link>
 
-					<Link to="/" className={clsx()}>
-						<button
-							className={clsx(
-								'w-[300px]',
-								'h-[75px]',
-								'bg-[#000000]',
-								'rounded-[25px]',
-								'text-white',
-								'text-4xl',
-								'mx-5'
-							)}
-							onClick={() => {
-								createPostAxios(imageUrl, header, text);
-							}}
-						>
-							CREATE
-						</button>
-					</Link>
+					{/* <Link to="/" className={clsx()}> */}
+					<button
+						className={clsx(
+							'w-[300px]',
+							'h-[75px]',
+							'bg-[#000000]',
+							'rounded-[25px]',
+							'text-white',
+							'text-4xl',
+							'mx-5'
+						)}
+						onClick={handleCreateClick}
+					>
+						CREATE
+					</button>
+					{/* </Link> */}
 				</div>
 				<div className={clsx('h-[150px]')}></div>
 			</div>

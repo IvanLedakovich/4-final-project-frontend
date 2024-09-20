@@ -5,7 +5,9 @@ import CreatePost from './Pages/CreatePost';
 import Home from './Pages/Home';
 import LogIn from './Pages/LogIn';
 import MyProfile from './Pages/MyProfile';
+import PostCreated from './Pages/PostCreated';
 import PostPage from './Pages/PostPage';
+import ProfileUpdated from './Pages/ProfileUpdated';
 import Register from './Pages/Register';
 import UpdateProfile from './Pages/UpdateProfile';
 
@@ -21,6 +23,8 @@ function App(): JSX.Element {
 				<Route path="/profile" element={<MyProfile />} />
 				<Route path="/change-info" element={<UpdateProfile />} />
 				<Route path="/create-post" element={<CreatePost />} />
+				<Route path="/post/created" element={<PostCreated />} />
+				<Route path="/profile/updated" element={<ProfileUpdated />} />
 				{posts.map((index) => (
 					<Route key={index} path="/posts/:id" element={<PostPage />} />
 				))}

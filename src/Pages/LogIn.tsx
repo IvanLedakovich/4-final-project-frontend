@@ -4,18 +4,54 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { logInAxios } from '../api/axios';
 import { fill } from '../redux/user/actionCreators';
+import { isEmailValid, isPasswordValid } from '../utils/macros';
 
 const LogIn: React.FC = () => {
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-	const user = useSelector((state: any) => state.user);
 	const navigate = useNavigate();
 
 	const dispatch = useDispatch();
 
+	const user = useSelector((state: any) => state.user);
+
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [loginError, setLoginError] = useState('');
+	const [emailError, setEmailError] = useState('');
+	const [passwordError, setPasswordError] = useState('');
+
 	const writeCredentialsToState = (res) => {
-		dispatch(fill(res));
-		navigate('/');
+		if (res) {
+			dispatch(fill(res));
+			navigate('/');
+		} else {
+			setLoginError('Invalid credentials.');
+		}
+	};
+
+	const handleEmailChange = (e) => {
+		setEmail(e.target.value);
+
+		if (!isEmailValid(e.target.value)) {
+			setEmailError('Invalid email format.');
+		} else {
+			setEmailError('');
+		}
+	};
+
+	const handlePasswordChange = (e) => {
+		setPassword(e.target.value);
+
+		if (!isPasswordValid(e.target.value)) {
+			setPasswordError('The password must be at least 6 characters long.');
+		} else {
+			setPasswordError('');
+		}
+	};
+
+	const handleLoginButton = () => {
+		try {
+			logInAxios(email, password, writeCredentialsToState);
+		} catch (e) {}
 	};
 
 	return (
@@ -53,9 +89,15 @@ const LogIn: React.FC = () => {
 						'border-none'
 					)}
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-						setEmail(e.target.value);
+						handleEmailChange(e);
 					}}
 				></input>
+
+				{emailError && (
+					<p className={clsx('absolute', 'ml-[30%]', 'mt-[20%]', 'text-[#FF0000]')}>
+						{emailError}
+					</p>
+				)}
 
 				<div
 					className={clsx(
@@ -87,29 +129,31 @@ const LogIn: React.FC = () => {
 						'border-none'
 					)}
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-						setPassword(e.target.value);
+						handlePasswordChange(e);
 					}}
 				></input>
 
-				<Link to="/" className={clsx('justify-self-center')}>
-					<button
-						className={clsx(
-							'w-[300px]',
-							'h-[75px]',
-							'bg-[#000000]',
-							'justify-self-center',
-							'mt-[50px]',
-							'rounded-[25px]',
-							'text-white',
-							'text-4xl'
-						)}
-						onClick={() => {
-							logInAxios(email, password, writeCredentialsToState);
-						}}
-					>
-						ENTER
-					</button>
-				</Link>
+				{passwordError && (
+					<p className={clsx('absolute', 'ml-[30%]', 'mt-[28%]', 'text-[#FF0000]')}>
+						{passwordError}
+					</p>
+				)}
+
+				<button
+					className={clsx(
+						'w-[300px]',
+						'h-[75px]',
+						'bg-[#000000]',
+						'justify-self-center',
+						'mt-[50px]',
+						'rounded-[25px]',
+						'text-white',
+						'text-4xl'
+					)}
+					onClick={handleLoginButton}
+				>
+					ENTER
+				</button>
 
 				<p
 					className={clsx(
@@ -141,6 +185,12 @@ const LogIn: React.FC = () => {
 						REGISTER
 					</button>
 				</Link>
+
+				{loginError && (
+					<p className={clsx('absolute', 'ml-[46%]', 'mt-[47%]', 'text-[#FF0000]')}>
+						{loginError}
+					</p>
+				)}
 			</div>
 		</>
 	);

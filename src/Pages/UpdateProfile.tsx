@@ -1,17 +1,29 @@
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { updateProfileAxios } from '../api/axios';
 import { fill } from '../redux/user/actionCreators';
+import {
+	isEmailValid,
+	isNicknameValid,
+	isPasswordValid
+} from '../utils/macros';
 
 const UpdateProfile: React.FC = () => {
-	const [email, setEmail] = useState('');
+	const navigate = useNavigate();
+
+	const user = useSelector((state: any) => state.user);
+
+	const [email, setEmail] = useState(user.email);
 	const [password, setPassword] = useState('');
-	const [nickname, setNickname] = useState('');
+	const [nickname, setNickname] = useState(user.nickname);
 	const [description, setDescription] = useState('');
 	const [imageUrl, setImageUrl] = useState('');
-	const user = useSelector((state: any) => state.user);
+	const [emailError, setEmailError] = useState('');
+	const [passwordError, setPasswordError] = useState('');
+	const [nicknameError, setNicknameError] = useState('');
+	const [descriptionError, setDescriptionError] = useState('');
 
 	const dispatch = useDispatch();
 
@@ -19,19 +31,69 @@ const UpdateProfile: React.FC = () => {
 		dispatch(fill(data));
 	};
 
-	const updateProfile = () => {
-		let newUser = {
-			id: user.id,
-			email: email ? email : user.email,
-			password: password,
-			nickname: nickname ? nickname : user.nickname,
-			description: description ? description : user.description,
-			imageUrl: imageUrl ? imageUrl : user.imageUrl,
-			myPosts: user.myPosts,
-			likedPosts: user.likedPosts
-		};
+	const handleEmailChange = (e) => {
+		setEmail(e.target.value);
 
-		updateProfileAxios(newUser, writeCredentialsToState);
+		if (!isEmailValid(e.target.value)) {
+			setEmailError('Invalid email format.');
+		} else {
+			setEmailError('');
+		}
+	};
+
+	const handlePasswordChange = (e) => {
+		setPassword(e.target.value);
+
+		if (!isPasswordValid(e.target.value)) {
+			setPasswordError('The password must be at least 6 characters long.');
+		} else {
+			setPasswordError('');
+		}
+	};
+
+	const handleNicknameChange = (e) => {
+		setNickname(e.target.value);
+
+		if (!isNicknameValid(e.target.value)) {
+			setNicknameError('The nickname can be max. 30 characters long.');
+		} else {
+			setNicknameError('');
+		}
+	};
+
+	const handleDescriptionChange = (e) => {
+		setDescription(e.target.value);
+
+		if (description.length > 400) {
+			setDescriptionError('The description can not be longer than 300 symbols.');
+		} else {
+			setDescriptionError('');
+		}
+	};
+
+	const updateProfile = () => {
+		if (
+			!emailError &&
+			!passwordError &&
+			!nicknameError &&
+			!descriptionError &&
+			email &&
+			nickname
+		) {
+			let newUser = {
+				id: user.id,
+				email: email ? email : user.email,
+				password: password,
+				nickname: nickname ? nickname : user.nickname,
+				description: description ? description : user.description,
+				imageUrl: imageUrl ? imageUrl : user.imageUrl,
+				myPosts: user.myPosts,
+				likedPosts: user.likedPosts
+			};
+
+			updateProfileAxios(newUser, writeCredentialsToState);
+			navigate('/profile/updated');
+		}
 	};
 
 	return (
@@ -60,9 +122,15 @@ const UpdateProfile: React.FC = () => {
 							'ml-[1%]'
 						)}
 						onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-							setEmail(e.target.value);
+							handleEmailChange(e);
 						}}
 					></input>
+
+					{emailError && (
+						<p className={clsx('absolute', 'ml-[1%]', 'mt-[5%]', 'text-[#FF0000]')}>
+							{emailError}
+						</p>
+					)}
 
 					<div
 						className={clsx(
@@ -92,9 +160,15 @@ const UpdateProfile: React.FC = () => {
 							'ml-[1%]'
 						)}
 						onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-							setPassword(e.target.value);
+							handlePasswordChange(e);
 						}}
 					></input>
+
+					{passwordError && (
+						<p className={clsx('absolute', 'ml-[1%]', 'mt-[7%]', 'text-[#FF0000]')}>
+							{passwordError}
+						</p>
+					)}
 
 					<div
 						className={clsx(
@@ -126,9 +200,15 @@ const UpdateProfile: React.FC = () => {
 							'ml-[1%]'
 						)}
 						onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-							setNickname(e.target.value);
+							handleNicknameChange(e);
 						}}
 					></input>
+
+					{nicknameError && (
+						<p className={clsx('absolute', 'ml-[1%]', 'mt-[7%]', 'text-[#FF0000]')}>
+							{nicknameError}
+						</p>
+					)}
 
 					<div
 						className={clsx(
@@ -194,9 +274,15 @@ const UpdateProfile: React.FC = () => {
 							'ml-[1%]'
 						)}
 						onChange={(e) => {
-							setDescription(e.target.value);
+							handleDescriptionChange(e);
 						}}
 					></textarea>
+
+					{descriptionError && (
+						<p className={clsx('absolute', 'ml-[1%]', 'mt-[26%]', 'text-[#FF0000]')}>
+							{descriptionError}
+						</p>
+					)}
 
 					<div
 						className={clsx(
@@ -212,7 +298,7 @@ const UpdateProfile: React.FC = () => {
 				</div>
 			</div>
 			<div className={clsx('flex', 'justify-center')}>
-				<Link to="/" className={clsx()}>
+				<Link to="/profile" className={clsx()}>
 					<button
 						className={clsx(
 							'w-[300px]',
@@ -228,22 +314,20 @@ const UpdateProfile: React.FC = () => {
 					</button>
 				</Link>
 
-				<Link to="/profile" className={clsx()}>
-					<button
-						className={clsx(
-							'w-[300px]',
-							'h-[75px]',
-							'bg-[#000000]',
-							'rounded-[25px]',
-							'text-white',
-							'text-4xl',
-							'mx-5'
-						)}
-						onClick={updateProfile}
-					>
-						UPDATE
-					</button>
-				</Link>
+				<button
+					className={clsx(
+						'w-[300px]',
+						'h-[75px]',
+						'bg-[#000000]',
+						'rounded-[25px]',
+						'text-white',
+						'text-4xl',
+						'mx-5'
+					)}
+					onClick={updateProfile}
+				>
+					UPDATE
+				</button>
 			</div>
 			<div className={clsx('h-[150px]')}></div>
 		</>
