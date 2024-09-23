@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { toggleLikeOnAccountAxios } from '../api/axios';
-import heartEmpty from '../images/heartEmpty.svg';
-import heartFull from '../images/heartFull.svg';
-import postImage from '../images/postImage.png';
+import postImage from '../images/png/postImage.png';
+import heartEmpty from '../images/svg/heartEmpty.svg';
+import heartFull from '../images/svg/heartFull.svg';
 import { fillInitially } from '../redux/posts/actionCreators';
 import { fill } from '../redux/user/actionCreators';
 

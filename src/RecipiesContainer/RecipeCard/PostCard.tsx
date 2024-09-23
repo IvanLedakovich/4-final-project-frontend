@@ -2,8 +2,8 @@ import clsx from 'clsx';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import heartEmpty from '../../images/heartEmpty.svg';
-import heartFull from '../../images/heartFull.svg';
+import heartEmpty from '../../images/svg/heartEmpty.svg';
+import heartFull from '../../images/svg/heartFull.svg';
 import { postName } from '../../ui/styles';
 import PostCardImage from './RecipeCardImage';
 

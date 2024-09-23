@@ -9,8 +9,8 @@ import {
 	sortByAgeAxios,
 	sortByLikesAxios
 } from '../api/axios';
-import defaultUserIcon from '../images/defaultUserIcon.png';
-import studioLogo from '../images/studioLogo.png';
+import defaultUserIcon from '../images/png/defaultUserIcon.png';
+import studioLogo from '../images/png/studioLogo.png';
 import PostsContainer from '../RecipiesContainer/PostsContainer';
 import { fillInitially, postsLoaded } from '../redux/posts/actionCreators';
 import { homepageHeaderImage } from '../ui/styles';

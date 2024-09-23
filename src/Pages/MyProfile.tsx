@@ -9,7 +9,7 @@ import {
 	searchPostsAxios,
 	searchRecipesAxios
 } from '../api/axios';
-import defaultUserIcon from '../images/defaultUserIcon.png';
+import defaultUserIcon from '../images/png/defaultUserIcon.png';
 import PostsContainer from '../RecipiesContainer/PostsContainer';
 import { fillInitially, postsLoaded } from '../redux/posts/actionCreators';
 
