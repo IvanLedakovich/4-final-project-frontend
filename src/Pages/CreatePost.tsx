@@ -1,52 +1,38 @@
 import clsx from 'clsx';
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { memo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { createPostAxios } from '../api/axios';
-import { fill } from '../redux/user/actionCreators';
 
 const CreatePost: React.FC = () => {
 	const navigate = useNavigate();
 
-	const dispatch = useDispatch();
-
 	const [imageUrl, setImageUrl] = useState('');
 	const [header, setHeader] = useState('');
 	const [text, setText] = useState('');
-	const [imageUrlError, setImageUrlError] = useState(
-		'The image URL can not be empty.'
-	);
-	const [headerError, setHeaderError] = useState('The header can not be empty.');
+
+	const [errors, setErrors] = useState({ imageUrlError: '', headerError: '' });
 
 	const handleImageUrlChange = (e) => {
 		setImageUrl(e.target.value);
-
-		if (!imageUrl) {
-			setImageUrlError('The image URL can not be empty.');
-		} else {
-			setImageUrlError('');
-		}
 	};
 
 	const handleHeaderChange = (e) => {
 		setHeader(e.target.value);
-
-		if (!header) {
-			setHeaderError('The header can not be empty.');
-		} else {
-			setHeaderError('');
-		}
 	};
 
 	const handleCreateClick = () => {
-		if (!imageUrlError && !headerError && imageUrl && header) {
-			createPostAxios(imageUrl, header, text);
-			navigate('/post/created');
+		let newErrors = errors;
+		if (!imageUrl) {
+			newErrors.imageUrlError = 'The image URL can not be empty.';
+			return;
 		}
-	};
+		if (!header) {
+			newErrors.headerError = 'The header can not be empty.';
+			return;
+		}
 
-	const writeCredentialsToState = (data) => {
-		dispatch(fill(data));
+		createPostAxios(imageUrl, header, text);
+		navigate('/post/created');
 	};
 
 	return (
@@ -88,9 +74,9 @@ const CreatePost: React.FC = () => {
 					}}
 				></input>
 
-				{imageUrlError && (
+				{errors.imageUrlError && (
 					<p className={clsx('absolute', 'ml-[5%]', 'mt-[18%]', 'text-[#FF0000]')}>
-						{imageUrlError}
+						{errors.imageUrlError}
 					</p>
 				)}
 
@@ -128,9 +114,9 @@ const CreatePost: React.FC = () => {
 					}}
 				></input>
 
-				{headerError && (
+				{errors.headerError && (
 					<p className={clsx('absolute', 'ml-[5%]', 'mt-[26%]', 'text-[#FF0000]')}>
-						{headerError}
+						{errors.headerError}
 					</p>
 				)}
 
@@ -187,7 +173,6 @@ const CreatePost: React.FC = () => {
 						</button>
 					</Link>
 
-					{/* <Link to="/" className={clsx()}> */}
 					<button
 						className={clsx(
 							'w-[300px]',
@@ -202,7 +187,6 @@ const CreatePost: React.FC = () => {
 					>
 						CREATE
 					</button>
-					{/* </Link> */}
 				</div>
 				<div className={clsx('h-[150px]')}></div>
 			</div>
@@ -210,4 +194,4 @@ const CreatePost: React.FC = () => {
 	);
 };
 
-export default CreatePost;
+export default memo(CreatePost);

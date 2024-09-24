@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
@@ -20,7 +20,7 @@ const PostPage: React.FC = () => {
 	const dispatch = useDispatch();
 
 	const [iLikedThisPost, setILikedThisPost] = useState(
-		user.likedPosts.find((element) => element == id)
+		user.likedPosts.find((element) => element === id)
 	);
 
 	const toggleLike = () => {
@@ -67,7 +67,7 @@ const PostPage: React.FC = () => {
 
 			<img
 				className={clsx('w-full', 'h-[350px]', 'object-cover')}
-				src={post ? post.imageUrl : postImage}
+				src={post?.imageUrl || postImage}
 				alt="pizzaHeader"
 			/>
 
@@ -80,7 +80,7 @@ const PostPage: React.FC = () => {
 					'mt-[30px]'
 				)}
 			>
-				{post ? post.header : 'no header'}
+				{post?.header || 'no header'}
 			</h1>
 
 			<p
@@ -92,7 +92,7 @@ const PostPage: React.FC = () => {
 					'mt-[30px]'
 				)}
 			>
-				{post ? post.text : ''}
+				{post?.text || ''}
 			</p>
 
 			<div className={clsx('flex', 'items-center', 'mt-[50px]')}>
@@ -113,4 +113,4 @@ const PostPage: React.FC = () => {
 	);
 };
 
-export default PostPage;
+export default memo(PostPage);

@@ -1,23 +1,12 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { registerAxios } from '../api/axios';
 import { fill } from '../redux/user/actionCreators';
-import {
-	isEmailValid,
-	isNicknameValid,
-	isPasswordValid
-} from '../utils/macros';
-
-type FormData = {
-	email: string;
-	password: string;
-	nickname: string;
-};
 
 const schema = yup
 	.object({
@@ -28,54 +17,20 @@ const schema = yup
 	.required();
 
 const Register: React.FC = () => {
+	const navigate = useNavigate();
+
+	const [emailRedShadow, setEmailRedShadow] = useState('');
+	const [passwordRedShadow, setPasswordRedShadow] = useState('');
+	const [nicknameRedShadow, setNicknameRedShadow] = useState('');
+
 	const {
 		register,
-		setValue,
 		handleSubmit,
 		formState: { errors }
 	} = useForm({
 		resolver: yupResolver(schema)
 	});
 	const onSubmit = (data) => handleEnterClick(data);
-
-	const navigate = useNavigate();
-
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-	const [nickname, setNickname] = useState('');
-	const [emailError, setEmailError] = useState('');
-	const [passwordError, setPasswordError] = useState('');
-	const [nicknameError, setNicknameError] = useState('');
-
-	const handleEmailChange = (e) => {
-		setEmail(e.target.value);
-
-		if (!isEmailValid(e.target.value)) {
-			setEmailError('Invalid email format.');
-		} else {
-			setEmailError('');
-		}
-	};
-
-	const handlePasswordChange = (e) => {
-		setPassword(e.target.value);
-
-		if (!isPasswordValid(e.target.value)) {
-			setPasswordError('The password must be at least 6 characters long.');
-		} else {
-			setPasswordError('');
-		}
-	};
-
-	const handleNicknameChange = (e) => {
-		setNickname(e.target.value);
-
-		if (!isNicknameValid(e.target.value)) {
-			setNicknameError('The nickname can be max. 30 characters long.');
-		} else {
-			setNicknameError('');
-		}
-	};
 
 	const handleEnterClick = (data) => {
 		registerAxios(
@@ -108,12 +63,15 @@ const Register: React.FC = () => {
 							'w-[650px]',
 							'h-[75px]',
 							'mx-auto',
-							'mt-[50px]'
+							'mt-[50px]',
+							'shadow-[#ff0000]',
+							`${emailRedShadow}`
 						)}
 					></div>
 
 					<input
-						{...register('email')}
+						{...register('email', { required: 'Email Address is required' })}
+						aria-invalid={errors.email ? 'true' : 'false'}
 						placeholder="Email"
 						className={clsx(
 							'absolute',
@@ -129,6 +87,12 @@ const Register: React.FC = () => {
 						)}
 					/>
 
+					{errors.email?.type === 'required' && (
+						<p role="alert" className={clsx('absolute', 'ml-5', 'text-[#FF0000]')}>
+							{errors.email.message}
+						</p>
+					)}
+
 					<div
 						className={clsx(
 							'rounded-[25px]',
@@ -138,12 +102,15 @@ const Register: React.FC = () => {
 							'w-[650px]',
 							'h-[75px]',
 							'mx-auto',
-							'mt-[50px]'
+							'mt-[50px]',
+							'shadow-[#ff0000]',
+							`${passwordRedShadow}`
 						)}
 					></div>
 
 					<input
-						{...register('password')}
+						{...register('password', { required: true, minLength: 6 })}
+						aria-invalid={errors.password ? 'true' : 'false'}
 						placeholder="Password"
 						className={clsx(
 							'absolute',
@@ -159,6 +126,18 @@ const Register: React.FC = () => {
 						)}
 					/>
 
+					{errors.password?.type === 'required' && (
+						<p role="alert" className={clsx('absolute', 'ml-5', 'text-[#FF0000]')}>
+							{errors.password.message}
+						</p>
+					)}
+
+					{errors.password?.type === 'minLength' && (
+						<p role="alert" className={clsx('absolute', 'ml-5', 'text-[#FF0000]')}>
+							Password must be at least 6 characters long
+						</p>
+					)}
+
 					<div
 						className={clsx(
 							'rounded-[25px]',
@@ -168,12 +147,15 @@ const Register: React.FC = () => {
 							'w-[650px]',
 							'h-[75px]',
 							'mx-auto',
-							'mt-[50px]'
+							'mt-[50px]',
+							'shadow-[#ff0000]',
+							`${nicknameRedShadow}`
 						)}
 					></div>
 
 					<input
-						{...register('nickname')}
+						{...register('nickname', { required: true })}
+						aria-invalid={errors.password ? 'true' : 'false'}
 						placeholder="Nickname"
 						className={clsx(
 							'absolute',
@@ -188,6 +170,13 @@ const Register: React.FC = () => {
 							'border-none'
 						)}
 					/>
+
+					{errors.nickname?.type === 'required' && (
+						<p role="alert" className={clsx('absolute', 'ml-5', 'text-[#FF0000]')}>
+							{errors.nickname.message}
+						</p>
+					)}
+
 					<input
 						type="submit"
 						value="ENTER"
@@ -242,4 +231,4 @@ const Register: React.FC = () => {
 	);
 };
 
-export default Register;
+export default memo(Register);

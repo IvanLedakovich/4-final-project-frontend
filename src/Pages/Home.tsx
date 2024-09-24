@@ -1,31 +1,28 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
 	getAllPostsAxios,
 	searchPostsAxios,
-	searchRecipesAxios,
 	sortByAgeAxios,
 	sortByLikesAxios
 } from '../api/axios';
 import defaultUserIcon from '../images/png/defaultUserIcon.png';
 import studioLogo from '../images/png/studioLogo.png';
-import PostsContainer from '../RecipiesContainer/PostsContainer';
+import PostsContainer from '../PostsContainer/PostsContainer';
 import { fillInitially, postsLoaded } from '../redux/posts/actionCreators';
 import { homepageHeaderImage } from '../ui/styles';
 
 const Home: React.FC = () => {
 	const user = useSelector((state: any) => state.user);
 
+	const navigate = useNavigate();
+
 	const dispatch = useDispatch();
 
 	const dispatchFillInitially = (res) => {
 		dispatch(fillInitially(res));
-	};
-
-	const searchRecipes = (e: React.ChangeEvent<HTMLInputElement>) => {
-		searchRecipesAxios(e.target.value, dispatchFillInitially);
 	};
 
 	const dispatchPostsLoaded = (boolean) => {
@@ -37,7 +34,7 @@ const Home: React.FC = () => {
 	};
 
 	if (!user) {
-		Navigate({ to: '/login' });
+		navigate('/login');
 	}
 
 	return (
@@ -90,13 +87,7 @@ const Home: React.FC = () => {
 							'border-solid',
 							'border-[#ffffff]'
 						)}
-						src={
-							user
-								? user.imageUrl
-									? user.imageUrl
-									: defaultUserIcon
-								: defaultUserIcon
-						}
+						src={user?.imageUrl || defaultUserIcon}
 						alt=""
 					/>
 				</Link>
@@ -201,4 +192,4 @@ const Home: React.FC = () => {
 	);
 };
 
-export default Home;
+export default memo(Home);

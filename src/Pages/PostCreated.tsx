@@ -1,13 +1,15 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const PostCreated: React.FC = () => {
 	const navigate = useNavigate();
 
-	setTimeout(() => {
-		navigate('/');
-	}, 3000);
+	useEffect(() => {
+		setTimeout(() => {
+			navigate('/');
+		}, 3000);
+	});
 
 	return (
 		<>

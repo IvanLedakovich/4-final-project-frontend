@@ -40,3 +40,9 @@ code {
 	font-style: normal;
 	font-variation-settings: 'wdth' 100, 'YTLC' 500;
 }
+
+input:focus {
+	outline: none;
+	box-shadow: none;
+	border: none;
+}

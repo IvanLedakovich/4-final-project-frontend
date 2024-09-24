@@ -1,6 +1,6 @@
 import clsx from 'clsx';
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { memo, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { logInAxios } from '../api/axios';
 import { fill } from '../redux/user/actionCreators';
@@ -11,13 +11,13 @@ const LogIn: React.FC = () => {
 
 	const dispatch = useDispatch();
 
-	const user = useSelector((state: any) => state.user);
-
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [loginError, setLoginError] = useState('');
 	const [emailError, setEmailError] = useState('');
 	const [passwordError, setPasswordError] = useState('');
+	const [emailRedShadow, setEmailRedShadow] = useState('');
+	const [passwordRedShadow, setPasswordRedShadow] = useState('');
 
 	const writeCredentialsToState = (res) => {
 		if (res) {
@@ -30,25 +30,31 @@ const LogIn: React.FC = () => {
 
 	const handleEmailChange = (e) => {
 		setEmail(e.target.value);
-
-		if (!isEmailValid(e.target.value)) {
-			setEmailError('Invalid email format.');
-		} else {
-			setEmailError('');
-		}
 	};
 
 	const handlePasswordChange = (e) => {
 		setPassword(e.target.value);
-
-		if (!isPasswordValid(e.target.value)) {
-			setPasswordError('The password must be at least 6 characters long.');
-		} else {
-			setPasswordError('');
-		}
 	};
 
 	const handleLoginButton = () => {
+		if (!isEmailValid(email)) {
+			setEmailRedShadow('shadow-md');
+			setEmailError('Invalid email format.');
+			return;
+		} else {
+			setEmailError('');
+			setEmailRedShadow('');
+		}
+
+		if (!isPasswordValid(password)) {
+			setPasswordRedShadow('shadow-md');
+			setPasswordError('The password must be at least 6 characters long.');
+			return;
+		} else {
+			setPasswordError('');
+			setPasswordRedShadow('');
+		}
+
 		try {
 			logInAxios(email, password, writeCredentialsToState);
 		} catch (e) {}
@@ -68,7 +74,9 @@ const LogIn: React.FC = () => {
 						'w-[650px]',
 						'h-[75px]',
 						'mx-auto',
-						'mt-[50px]'
+						'mt-[50px]',
+						'shadow-[#ff0000]',
+						`${emailRedShadow}`
 					)}
 				></div>
 
@@ -108,7 +116,9 @@ const LogIn: React.FC = () => {
 						'w-[650px]',
 						'h-[75px]',
 						'mx-auto',
-						'mt-[50px]'
+						'mt-[50px]',
+						'shadow-[#ff0000]',
+						`${passwordRedShadow}`
 					)}
 				></div>
 
@@ -196,4 +206,4 @@ const LogIn: React.FC = () => {
 	);
 };
 
-export default LogIn;
+export default memo(LogIn);

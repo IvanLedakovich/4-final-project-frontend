@@ -19,7 +19,6 @@ export const logInAxios = (email: string, password: string, _callback) => {
 		.post(`http://localhost:8000/api/login`, { email, password })
 
 		.then((res) => {
-			const token = Cookies.get('jwt');
 			_callback(res.data);
 		})
 		.catch((error) => {
@@ -74,11 +73,11 @@ export const toggleLikeOnAccountAxios = (
 	post,
 	_callback,
 	_callback2,
-	iLikedThisPost
+	isLikedPostByCurrentUser
 ) => {
 	let newUser = JSON.parse(JSON.stringify(user));
 
-	if (iLikedThisPost) {
+	if (isLikedPostByCurrentUser) {
 		newUser.likedPosts = user.likedPosts.filter((e) => e !== Number(post.id));
 	} else {
 		newUser.likedPosts.push(Number(post.id));
@@ -89,7 +88,7 @@ export const toggleLikeOnAccountAxios = (
 
 		.then(() => {
 			_callback(newUser);
-			likeOnPostAxios(Number(post.id), iLikedThisPost, _callback2);
+			likeOnPostAxios(Number(post.id), isLikedPostByCurrentUser, _callback2);
 		})
 		.catch((error) => {
 			handleRequestError(error);
@@ -138,7 +137,7 @@ export const searchRecipesAxios = (searchTerm: string, _callback) => {
 };
 
 export const searchPostsAxios = (searchTerm: string, _callback) => {
-	if (searchTerm.length != 0) {
+	if (searchTerm.length !== 0) {
 		const posts = allPosts.filter(
 			(post) =>
 				post.header.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -225,7 +224,7 @@ export const getMyPostsAxios = async (userId, _callback) => {
 		.get(`http://localhost:8000/api/posts`)
 		.then((res) => {
 			allPosts = res.data;
-			_callback(res.data.filter((post) => post.authorId == userId));
+			_callback(res.data.filter((post) => post.authorId === userId));
 		})
 		.catch((error) => {
 			handleRequestError(error);
@@ -239,8 +238,8 @@ export const getPostsILikedAxios = async (user, _callback) => {
 			allPosts = res.data;
 			let posts = new Array();
 			user.likedPosts.forEach((likedPostId) => {
-				if (res.data.find((element) => element.id == likedPostId)) {
-					posts.push(res.data.find((element) => element.id == likedPostId));
+				if (res.data.find((element) => element.id === likedPostId)) {
+					posts.push(res.data.find((element) => element.id === likedPostId));
 				}
 			});
 

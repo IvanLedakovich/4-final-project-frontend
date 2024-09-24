@@ -1,20 +1,20 @@
 import clsx from 'clsx';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
 	getMyPostsAxios,
 	getPostsILikedAxios,
-	logOutAxios,
-	searchPostsAxios,
-	searchRecipesAxios
+	logOutAxios
 } from '../api/axios';
 import defaultUserIcon from '../images/png/defaultUserIcon.png';
-import PostsContainer from '../RecipiesContainer/PostsContainer';
-import { fillInitially, postsLoaded } from '../redux/posts/actionCreators';
+import PostsContainer from '../PostsContainer/PostsContainer';
+import { fillInitially } from '../redux/posts/actionCreators';
 
 const MyProfile: React.FC = () => {
 	const user = useSelector((state: any) => state.user);
+
+	const navigate = useNavigate();
 
 	const dispatch = useDispatch();
 
@@ -26,18 +26,6 @@ const MyProfile: React.FC = () => {
 		dispatch(fillInitially(res));
 	};
 
-	const searchRecipes = (e: React.ChangeEvent<HTMLInputElement>) => {
-		searchRecipesAxios(e.target.value, dispatchFillInitially);
-	};
-
-	const dispatchPostsLoaded = (boolean) => {
-		dispatch(postsLoaded(boolean));
-	};
-
-	const searchPosts = (e: React.ChangeEvent<HTMLInputElement>) => {
-		searchPostsAxios(e.target.value, dispatchFillInitially);
-	};
-
 	const getMyPosts = () => {
 		getMyPostsAxios(user.id, dispatchFillInitially);
 	};
@@ -47,7 +35,7 @@ const MyProfile: React.FC = () => {
 	};
 
 	if (!user) {
-		Navigate({ to: '/login' });
+		navigate('/login');
 	}
 
 	return (
@@ -84,13 +72,11 @@ const MyProfile: React.FC = () => {
 			>
 				<img
 					className={clsx('w-[150px], h-[150px]', 'rounded-[75px]', 'ml-[5%]')}
-					src={
-						user ? (user.imageUrl ? user.imageUrl : defaultUserIcon) : defaultUserIcon
-					}
+					src={user?.imageUrl || defaultUserIcon}
 					alt="pizzaHeader"
 				/>
 				<h1 className={clsx('text-white', 'text-4xl', 'ml-10', 'font-bold')}>
-					{user ? user.nickname : ''}
+					{user?.nickname || ''}
 				</h1>
 			</div>
 
@@ -103,13 +89,13 @@ const MyProfile: React.FC = () => {
 					'mt-[30px]'
 				)}
 			>
-				{user ? (user.description ? user.description : 'No bio') : 'No bio'}
+				{user?.description || 'No bio'}
 			</p>
 
 			<div className={clsx('flex', 'w-[90%]', 'h-[50px]', 'mx-[5%]', 'mt-[30px]')}>
 				<h4 className={clsx('text-black', 'text-3xl', 'font-bold')}>EMAIL:</h4>
 				<p className={clsx('text-black', 'text-3xl', 'ml-5')}>
-					{user ? user.email : ''}
+					{user?.email || ''}
 				</p>
 
 				<button

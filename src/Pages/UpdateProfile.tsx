@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { updateProfileAxios } from '../api/axios';
@@ -24,6 +24,11 @@ const UpdateProfile: React.FC = () => {
 	const [passwordError, setPasswordError] = useState('');
 	const [nicknameError, setNicknameError] = useState('');
 	const [descriptionError, setDescriptionError] = useState('');
+	const [emailRedShadow, setEmailRedShadow] = useState('');
+	const [passwordRedShadow, setPasswordRedShadow] = useState('');
+	const [nicknameRedShadow, setNicknameRedShadow] = useState('');
+	const [imageUrlRedShadow, setImageUrlRedShadow] = useState('');
+	const [descriptionRedShadow, setDescriptionRedShadow] = useState('');
 
 	const dispatch = useDispatch();
 
@@ -33,22 +38,10 @@ const UpdateProfile: React.FC = () => {
 
 	const handleEmailChange = (e) => {
 		setEmail(e.target.value);
-
-		if (!isEmailValid(e.target.value)) {
-			setEmailError('Invalid email format.');
-		} else {
-			setEmailError('');
-		}
 	};
 
 	const handlePasswordChange = (e) => {
 		setPassword(e.target.value);
-
-		if (!isPasswordValid(e.target.value)) {
-			setPasswordError('The password must be at least 6 characters long.');
-		} else {
-			setPasswordError('');
-		}
 	};
 
 	const handleNicknameChange = (e) => {
@@ -72,6 +65,18 @@ const UpdateProfile: React.FC = () => {
 	};
 
 	const updateProfile = () => {
+		if (!isEmailValid(email)) {
+			setEmailError('Invalid email format.');
+		} else {
+			setEmailError('');
+		}
+
+		if (!isPasswordValid(password)) {
+			setPasswordError('The password must be at least 6 characters long.');
+		} else {
+			setPasswordError('');
+		}
+
 		if (
 			!emailError &&
 			!passwordError &&
@@ -92,7 +97,9 @@ const UpdateProfile: React.FC = () => {
 			};
 
 			updateProfileAxios(newUser, writeCredentialsToState);
-			navigate('/profile/updated');
+			try {
+				navigate('/profile/updated');
+			} catch (e) {}
 		}
 	};
 
@@ -118,7 +125,6 @@ const UpdateProfile: React.FC = () => {
 							'w-[560px]',
 							'h-[75px]',
 							'bg-transparent',
-							'border-none',
 							'ml-[1%]'
 						)}
 						onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -140,7 +146,9 @@ const UpdateProfile: React.FC = () => {
 							'border-[#000000]',
 							'w-[600px]',
 							'h-[75px]',
-							'mx-auto'
+							'mx-auto',
+							'shadow-[#ff0000]',
+							`${emailRedShadow}`
 						)}
 					></div>
 
@@ -179,7 +187,9 @@ const UpdateProfile: React.FC = () => {
 							'w-[600px]',
 							'h-[75px]',
 							'mx-auto',
-							'mt-[30px]'
+							'mt-[30px]',
+							'shadow-[#ff0000]',
+							`${passwordRedShadow}`
 						)}
 					></div>
 
@@ -219,7 +229,9 @@ const UpdateProfile: React.FC = () => {
 							'w-[600px]',
 							'h-[75px]',
 							'mx-auto',
-							'mt-[30px]'
+							'mt-[30px]',
+							'shadow-[#ff0000]',
+							`${nicknameRedShadow}`
 						)}
 					></div>
 
@@ -253,7 +265,9 @@ const UpdateProfile: React.FC = () => {
 							'w-[600px]',
 							'h-[75px]',
 							'mx-auto',
-							'mt-[30px]'
+							'mt-[30px]',
+							'shadow-[#ff0000]',
+							`${imageUrlRedShadow}`
 						)}
 					></div>
 				</div>
@@ -292,7 +306,9 @@ const UpdateProfile: React.FC = () => {
 							'border-[#000000]',
 							'w-[750px]',
 							'h-[390px]',
-							'mx-auto'
+							'mx-auto',
+							'shadow-[#ff0000]',
+							`${descriptionRedShadow}`
 						)}
 					></div>
 				</div>
@@ -334,4 +350,4 @@ const UpdateProfile: React.FC = () => {
 	);
 };
 
-export default UpdateProfile;
+export default memo(UpdateProfile);
