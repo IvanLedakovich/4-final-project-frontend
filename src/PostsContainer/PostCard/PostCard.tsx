@@ -9,12 +9,12 @@ import PostCardImage from './PostCardImage';
 
 const PostCard: React.FC<{
 	id: number;
-	imageUrl: string;
+	image;
 	header: string;
 	text: string;
 	authorId: number;
 	likesQuantity: number;
-}> = ({ id, imageUrl, header, text, authorId, likesQuantity }) => {
+}> = ({ id, image, header, text, authorId, likesQuantity }) => {
 	const user = useSelector((state: any) => state.user);
 
 	const [iLikedThisPost, setILikedThisPost] = useState(
@@ -35,7 +35,7 @@ const PostCard: React.FC<{
 						'xl:h-[685px]'
 					)}
 				>
-					<PostCardImage imgSrc={imageUrl} />
+					<PostCardImage imgSrc={image.data} />
 
 					<div
 						className={clsx(

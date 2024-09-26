@@ -6,24 +6,25 @@ import { createPostAxios } from '../api/axios';
 const CreatePost: React.FC = () => {
 	const navigate = useNavigate();
 
-	const [imageUrl, setImageUrl] = useState('');
+	const [image, setImage] = useState();
 	const [header, setHeader] = useState('');
 	const [text, setText] = useState('');
 
-	const [errors, setErrors] = useState({ imageUrlError: '', headerError: '' });
+	const [errors, setErrors] = useState({ imageError: '', headerError: '' });
 
-	const handleImageUrlChange = (e) => {
-		setImageUrl(e.target.value);
+	const handleImageUrlChange = (event) => {
+		setImage(event.target.files[0]);
 	};
 
 	const handleHeaderChange = (e) => {
 		setHeader(e.target.value);
 	};
 
-	const handleCreateClick = () => {
+	const handleCreateClick = (event) => {
+		event.preventDefault();
 		let newErrors = errors;
-		if (!imageUrl) {
-			newErrors.imageUrlError = 'The image URL can not be empty.';
+		if (!image) {
+			newErrors.imageError = 'The image URL can not be empty.';
 			return;
 		}
 		if (!header) {
@@ -31,7 +32,7 @@ const CreatePost: React.FC = () => {
 			return;
 		}
 
-		createPostAxios(imageUrl, header, text);
+		createPostAxios(image, header, text);
 		navigate('/post/created');
 	};
 
@@ -54,7 +55,7 @@ const CreatePost: React.FC = () => {
 				></div>
 
 				<input
-					type="text"
+					type="file"
 					name="imageUrl"
 					placeholder="Image URL"
 					className={clsx(
@@ -69,14 +70,12 @@ const CreatePost: React.FC = () => {
 						'bg-transparent',
 						'border-none'
 					)}
-					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-						handleImageUrlChange(e);
-					}}
+					onChange={handleImageUrlChange}
 				></input>
 
-				{errors.imageUrlError && (
+				{errors.imageError && (
 					<p className={clsx('absolute', 'ml-[5%]', 'mt-[18%]', 'text-[#FF0000]')}>
-						{errors.imageUrlError}
+						{errors.imageError}
 					</p>
 				)}
 

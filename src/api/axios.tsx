@@ -11,7 +11,6 @@ axios.defaults.withCredentials = true;
 
 const handleRequestError = (error: any) => {
 	console.error('Ошибка запроса:', error);
-	// throw error;
 };
 
 export const logInAxios = (email: string, password: string, _callback) => {
@@ -178,15 +177,27 @@ export const getAllPostsAxios = (_callback) => {
 		});
 };
 
-export const createPostAxios = (
-	imageUrl: string,
-	header: string,
-	text: string
-) => {
-	axios
-		.post(`http://localhost:8000/api/posts/create`, { imageUrl, header, text })
+export const createPostAxios = (image, header, text) => {
+	const form = new FormData();
+	form.append('file', image);
+	form.append('header', header);
+	form.append('text', text);
 
-		.then((res) => {})
+	const config = {
+		formSerializer: {
+			indexes: null
+		},
+		headers: {
+			'Content-Type': 'multipart/form-data'
+		}
+	};
+
+	axios
+		.post(`http://localhost:8000/api/posts/create`, form, config)
+
+		.then((res) => {
+			console.log(res.data);
+		})
 		.catch((error) => {
 			handleRequestError(error);
 			alert('Invalid credentials');

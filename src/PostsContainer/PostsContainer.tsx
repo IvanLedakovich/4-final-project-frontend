@@ -29,7 +29,7 @@ const PostsContainer: React.FC = () => {
 							<PostCard
 								key={element.id}
 								id={element.id}
-								imageUrl={element.imageUrl}
+								image={element.image}
 								header={element.header.substring(0, MAX_HEADER_LENGTH).toUpperCase()}
 								text={element.text}
 								authorId={element.authorId}
